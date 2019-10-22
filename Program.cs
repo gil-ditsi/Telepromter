@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Telepromter
 {
@@ -12,7 +13,11 @@ namespace Telepromter
             var lines = ReadFrom("sampleQuotes.txt");
             foreach (var item in lines)
             {
-                Console.WriteLine(item);
+                Console.Write(item);
+                if(!string.IsNullOrWhiteSpace(item)){
+                    var pause = Task.Delay(200);
+                    pause.Wait();
+                }
             }
 
         }
@@ -23,7 +28,12 @@ namespace Telepromter
             {
                 while ((line = reader.ReadLine()) != null)
                 {
-                    yield return line;
+                    var words = line.Split(' ');
+                    foreach (var item in words)
+                    {
+                        yield return item + " ";
+                    }
+                    yield return Environment.NewLine;
                 }
             }
         }
